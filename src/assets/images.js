@@ -15,8 +15,10 @@ import toyotaLogo from './LogosAutos/Toyota.png';
 import pdf from './imagenes/pdf.png';
 import excel from './imagenes/excel.png';
 
-export const assetws = {
+export const assets = {
     logo: logo,
+    pdf: pdf,
+    excel:excel
     imagenes: [
         { name: "BMWLogo", value: BMWLogo },
         { name: "ChevroletLogo", value: chevroletLogo },
