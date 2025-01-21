@@ -18,7 +18,7 @@ import excel from './imagenes/excel.png';
 export const assets = {
     logo: logo,
     pdf: pdf,
-    excel:excel
+    excel:excel,
     imagenes: [
         { name: "BMWLogo", value: BMWLogo },
         { name: "ChevroletLogo", value: chevroletLogo },
@@ -31,8 +31,6 @@ export const assets = {
         { name: "PeugeotLogo", value: peugeotLogo },
         { name: "RenaultLogo", value: renaultLogo },
         { name: "SusukiLogo", value: susukiLogo },
-        { name: "ToyotaLogo", value: toyotaLogo },
-        { name: "PDF", value: pdf },
-        { name: "Excel", value: excel }
+        { name: "ToyotaLogo", value: toyotaLogo }
     ]
 };
