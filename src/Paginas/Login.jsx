@@ -6,18 +6,14 @@ import axios from 'axios';
 import AuthContext from '../context/AuthProvider';
 import Mensaje from '../components/Alertas';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import fondo2 from '../assets/imagenes/bg2.png'
+import fondo2 from '../assets/imagenes/bg2.png';
 
 export const Login = () => {
   const navigate = useNavigate();
   const { setAuth, loginMessage } = useContext(AuthContext);
   const [mensaje, setMensaje] = useState({});
   const [errores, setErrores] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // Estado para alternar visibilidad
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (loginMessage?.respuesta) {
@@ -39,29 +35,24 @@ export const Login = () => {
       const URLogin = `${process.env.VITE_BACKEND_URL}/login`;
       const respuesta = await axios.post(URLogin, loginForm);
 
-      // Guardar token en localStorage y establecer contexto
       localStorage.setItem('token', respuesta.data.empleado.token);
       setAuth(respuesta.data.empleado);
-      //Mensaje de exito
+      
       setMensaje({ respuesta: 'Inicio de sesión exitoso', tipo: true });
       setTimeout(() => {
         setMensaje({});
         navigate('/dashboard');
-      }, 3000); 
+      }, 3000);
     } catch (error) {
-      //Mensaje de error
       setMensaje({ respuesta: error.response.data.message, tipo: false });
-	  console.log(error);
+      console.log(error);
 
-      // Limpiar el formulario después del error
-      //setLoginForm({ correo: '', contrasena: '' });
       setTimeout(() => {
         setMensaje({});
       }, 3000);
     }
   };
 
-  // Manejador de cambio de valores del formulario
   const handleChange = (e) => {
     setLoginForm({
       ...loginForm,
@@ -70,33 +61,37 @@ export const Login = () => {
   };
 
   return (
-    <div  className="bg-black flex flex-col items-center justify-center h-screen px-5 bg-cover bg-center bg-no-repeat"
-    style={{ backgroundImage: `url(${fondo2})` }}
+    <div 
+      className="bg-black flex flex-col items-center justify-center min-h-screen w-full px-5 
+                 bg-cover bg-center bg-no-repeat bg-fixed"
+      style={{ backgroundImage: `url(${fondo2})` }}
     >
-      <div className="flex flex-col items-center">
-        <img src={logo} alt="Full Prestige" className="logo mb-5" style={{ width: '300px', height: 'auto' }} />
-        <div className='mb-4'>
-          {Object.keys(mensaje).length !== 0 && (<Mensaje mensaje={mensaje.respuesta} tipo={mensaje.tipo} errores={!mensaje.tipo ? errores : {}} 
-                />
-                )}
-        </div>
-         
-      
-        <form
-          onSubmit={handleLogin}
-          className="bg-black border-4 border-red-600 p-16 rounded-lg shadow-lg w-full max-w-md"
+      <div className="flex flex-col items-center w-full max-w-lg">
+        <img src={logo} alt="Full Prestige" className="mb-5 w-3/4 max-w-xs" />
+        
+        {Object.keys(mensaje).length !== 0 && (
+          <div className="mb-4 w-full">
+            <Mensaje mensaje={mensaje.respuesta} tipo={mensaje.tipo} errores={!mensaje.tipo ? errores : {}} />
+          </div>
+        )}
+
+        <form 
+          onSubmit={handleLogin} 
+          className="flex flex-col items-center bg-black border-4 border-red-600 p-8 
+                     rounded-lg shadow-lg w-full max-w-md"
         >
           <div className="flex justify-center mb-5">
-            <img
-              src={user}
-              alt="user"
-              className="user rounded-full w-28 h-28 border border-red-600"
-              style={{ borderWidth: '2px' }}
+            <img 
+              src={user} 
+              alt="user" 
+              className="rounded-full w-20 h-20 border-2 border-red-600"
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="correo" className="block text-sm font-semibold mb-2 text-white">Correo</label>
+          <div className="mb-4 w-full">
+            <label htmlFor="correo" className="block text-sm font-semibold mb-2 text-white">
+              Correo
+            </label>
             <input
               type="email"
               name="correo"
@@ -105,46 +100,46 @@ export const Login = () => {
               onChange={handleChange}
               required
               placeholder="Ingresa tu correo"
-              className="border-2 border-red-600 bg-gray-200 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-red-700"
-              style={{ minWidth: '300px' }}
+              className="border-2 border-red-600 bg-gray-200 rounded-lg py-2 px-4 w-full 
+                         focus:outline-none focus:border-red-700"
             />
           </div>
 
-          <div className="mb-4 relative">
-            <label htmlFor="contrasena" className="block text-sm font-semibold mb-2 text-white">Contraseña</label>
+          <div className="mb-4 w-full relative">
+            <label htmlFor="contrasena" className="block text-sm font-semibold mb-2 text-white">
+              Contraseña
+            </label>
             <input
-              type={showPassword ? 'text' : 'password'} // Cambia el tipo según el estado
+              type={showPassword ? 'text' : 'password'}
               name="contrasena"
               id="contrasena"
               value={loginForm.contrasena}
               onChange={handleChange}
               required
               placeholder="Ingresa tu contraseña"
-              className="border-2 border-red-600 bg-gray-200 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-red-600"
-              style={{ minWidth: '300px' }}
+              className="border-2 border-red-600 bg-gray-200 rounded-lg py-2 px-4 w-full 
+                         focus:outline-none focus:border-red-600"
             />
             <button
               type="button"
-              onClick={togglePasswordVisibility}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 mt-4"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-12 transform -translate-y-1/2 text-gray-500"
               aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
             >
-              {showPassword ? <FaEyeSlash size={24} /> : <FaEye size={24} />} {/* Cambia el ícono */}
+              {showPassword ? <FaEyeSlash size={24} /> : <FaEye size={24} />}
             </button>
           </div>
-          <a href="/olvidaste-contrasena" className=' no-underline hover:underline flex text-blue-50 justify-center  mb-2'>
+
+          <a href="/olvidaste-contrasena" className="text-blue-50 hover:underline mb-2">
             ¿Olvidaste tu contraseña?
-
           </a>
-         
-        
 
-          <div className="flex justify-center ">
+          <div className="w-full flex justify-center">
             <button
               type="submit"
-              disabled={!loginForm.correo || !loginForm.contrasena} // Deshabilitar si algún campo está vacío
-              className="w-full py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-800 transition duration-300"
-              style={{ maxWidth: '200px' }}
+              disabled={!loginForm.correo || !loginForm.contrasena}
+              className="w-full max-w-xs py-2 bg-green-600 text-white font-semibold rounded-lg 
+                         hover:bg-green-800 transition duration-300"
             >
               Iniciar Sesión
             </button>
