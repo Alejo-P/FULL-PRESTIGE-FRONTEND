@@ -143,7 +143,14 @@ export const FormularioUsuarios = ({ usuarios }) => {
             // Preparar los datos para el registro, excluyendo la propiedad 'estado'
             const DatosRegistrar = { ...registro };
             delete DatosRegistrar.estado;
-            const respuesta = await axios.post(URLRegister, DatosRegistrar);
+            const respuesta = await axios.post(URLRegister, DatosRegistrar,
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+              }
+            );
 
             // Configurar el mensaje de éxito
             setMensaje({ respuesta: "Usuario registrado con éxito", tipo: true });
